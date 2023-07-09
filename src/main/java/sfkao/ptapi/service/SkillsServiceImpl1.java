@@ -6,12 +6,14 @@ import sfkao.ptapi.models.Pokemon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class SkillsServiceImpl1 implements SkillService {
 
     public PTPokemon transformarAPT(Pokemon pokemon){
-        pokemon.getFormas().forEach(p -> {
+        Set<Pokemon> formas = pokemon.getFormas();
+        formas.forEach(p -> {
             p.setFormas(null);
         });
 
@@ -27,7 +29,7 @@ public class SkillsServiceImpl1 implements SkillService {
                 pokemon.getSpe(),
                 pokemon.getTipo1(),
                 pokemon.getTipo2(),
-                pokemon.getFormas(),
+                formas,
                 calcularHabilidades(pokemon),
                 "Bloqueo",
                 "Ataca",

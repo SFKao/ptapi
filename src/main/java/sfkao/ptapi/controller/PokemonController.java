@@ -3,10 +3,8 @@ package sfkao.ptapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import sfkao.ptapi.dto.PTPokemon;
 import sfkao.ptapi.service.PokemonService;
 
 @RestController
@@ -22,9 +20,13 @@ public class PokemonController {
     @GetMapping
     public ResponseEntity<?> getPokemon(@RequestParam(name = "pk") String idONombre){
 
-        return ResponseEntity.ok(pokemonService.findByIdOrName(idONombre));
+        PTPokemon poke = pokemonService.findByIdOrName(idONombre);
+        if(poke==null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(poke);
 
     }
+
 
 
 }

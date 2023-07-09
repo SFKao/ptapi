@@ -11,6 +11,24 @@ import java.util.Set;
 @Table(name = "pokemon")
 public class Pokemon {
 
+    public Pokemon(Integer id, String nombre, String urlSprite, int hp, int atk, int def, int spa, int spd, int spe, String tipo1, String tipo2, Set<Pokemon> formas) {
+        this.id = id;
+        this.nombre = nombre;
+        this.urlSprite = urlSprite;
+        this.hp = hp;
+        this.atk = atk;
+        this.def = def;
+        this.spa = spa;
+        this.spd = spd;
+        this.spe = spe;
+        this.tipo1 = tipo1;
+        this.tipo2 = tipo2;
+        this.formas = formas;
+    }
+
+    public Pokemon() {
+    }
+
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -28,6 +46,8 @@ public class Pokemon {
             joinColumns = @JoinColumn(name = "pokemon_1_id"),
             inverseJoinColumns = @JoinColumn(name = "pokemons_2_id"))
     private Set<Pokemon> formas = new LinkedHashSet<>();
+
+
 
     public void setId(Integer id) {
         this.id = id;
