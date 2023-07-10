@@ -2,6 +2,7 @@ package sfkao.ptapi.service;
 
 import org.springframework.stereotype.Service;
 import sfkao.ptapi.dto.PTPokemon;
+import sfkao.ptapi.dto.Stat;
 import sfkao.ptapi.models.Pokemon;
 
 import java.util.ArrayList;
@@ -12,11 +13,8 @@ import java.util.Set;
 public class SkillsServiceImpl1 implements SkillService {
 
     public PTPokemon transformarAPT(Pokemon pokemon){
-        pokemon.getFormas().forEach(p -> p.setFormas(null));
         Set<Pokemon> formas = pokemon.getFormas();
-        formas.forEach(p -> {
-            p.setFormas(null);
-        });
+        formas.forEach(p -> p.setFormas(null));
 
         return new PTPokemon(
                 pokemon.getId(),
