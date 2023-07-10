@@ -13,8 +13,10 @@ public record PTPokemon(
         String tipo1, String tipo2,
         Set<Pokemon> formas,
         List<String> habilidades,
-        String bloqueo,
-        String ataca,
+        Stat bloqueo,
+        Stat ataque,
         int movimiento
 ) {
 }
+
+
