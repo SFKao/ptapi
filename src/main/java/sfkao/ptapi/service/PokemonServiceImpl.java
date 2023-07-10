@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sfkao.ptapi.dto.PTPokemon;
 import sfkao.ptapi.models.Pokemon;
+import sfkao.ptapi.pojo.pokeapi.getpokemon.PokeApiPokemon;
 import sfkao.ptapi.repository.PokemonRepository;
 
 import java.util.ArrayList;
@@ -15,11 +16,14 @@ public class PokemonServiceImpl implements  PokemonService{
 
     private final PokemonRepository pokemonRepository;
     private final SkillService skillService;
+    private final PokeApiService pokeApiService;
 
     public PokemonServiceImpl(@Autowired PokemonRepository pokemonRepository,
-                              @Autowired SkillService skillsService) {
+                              @Autowired SkillService skillsService,
+                              @Autowired PokeApiService pokeApiService) {
         this.pokemonRepository = pokemonRepository;
         this.skillService = skillsService;
+        this.pokeApiService = pokeApiService;
     }
 
 
@@ -45,12 +49,18 @@ public class PokemonServiceImpl implements  PokemonService{
     @Override
     public PTPokemon findByIdOrName(String idOrName) {
         int id = 0;
+        Pokemon pokemon;
         try{
             id = Integer.parseInt(idOrName);
         }catch (NumberFormatException ignored){}
         Optional<Pokemon> pOptional = pokemonRepository.findFirstByIdOrNombreLikeIgnoreCaseOrderByIdAsc(id, idOrName);
-        if(pOptional.isEmpty())
-            return null;
-        return skillService.transformarAPT(pOptional.get());
+
+        if(pOptional.isEmpty()) {
+            pokemon = pokeApiService.obtenerDePokeApi(idOrName);
+            if(pokemon==null)
+                return null;
+        }else
+            pokemon = pOptional.get();
+        return skillService.transformarAPT(pokemon);
     }
 }
