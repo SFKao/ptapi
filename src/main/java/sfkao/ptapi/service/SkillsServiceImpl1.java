@@ -2,6 +2,7 @@ package sfkao.ptapi.service;
 
 import org.springframework.stereotype.Service;
 import sfkao.ptapi.dto.PTPokemon;
+import sfkao.ptapi.dto.Skill;
 import sfkao.ptapi.dto.Stat;
 import sfkao.ptapi.models.Pokemon;
 
@@ -30,15 +31,18 @@ public class SkillsServiceImpl1 implements SkillService {
                 pokemon.getTipo2(),
                 formas,
                 calcularHabilidades(pokemon),
-                new Stat(true, false, 2, 1),
-                new Stat(true, true,  1, 3),
+                new Stat(  2, 1),
+                new Stat(   0, 3),
                 3
         );
     }
 
-    public List<String> calcularHabilidades(Pokemon pokemon){
+    public List<Skill> calcularHabilidades(Pokemon pokemon){
         //TODO: Hacer
-        return new ArrayList<>();
+        ArrayList<Skill> skills = new ArrayList<>();
+        skills.add(new Skill("Vuelo","Puede volar","https://static.wikia.nocookie.net/leagueoflegendsoficial/images/8/8c/LOL_Logo.png/revision/latest?cb=20180119195439&path-prefix=es"));
+        skills.add(new Skill("Inmune veneno", "Es inmune al veneno","https://static.wikia.nocookie.net/leagueoflegendsoficial/images/8/8c/LOL_Logo.png/revision/latest?cb=20180119195439&path-prefix=es"));
+        return skills;
     }
 
 }

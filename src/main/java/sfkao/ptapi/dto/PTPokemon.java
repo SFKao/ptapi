@@ -12,7 +12,7 @@ public record PTPokemon(
         int hp, int atk, int def, int spa, int spd, int spe,
         String tipo1, String tipo2,
         Set<Pokemon> formas,
-        List<String> habilidades,
+        List<Skill> habilidades,
         Stat bloqueo,
         Stat ataque,
         int movimiento
