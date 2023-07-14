@@ -9,6 +9,7 @@ import sfkao.ptapi.service.PokemonService;
 
 @RestController
 @RequestMapping("/api/v2/pokemon")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class PokemonController {
 
     private final PokemonService pokemonService;
