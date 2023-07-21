@@ -2,7 +2,6 @@ package sfkao.ptapi.service;
 
 import org.springframework.stereotype.Service;
 import sfkao.ptapi.dto.PTPokemon;
-import sfkao.ptapi.models.Pokemon;
 
 import java.util.List;
 
