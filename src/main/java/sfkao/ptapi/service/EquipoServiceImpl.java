@@ -2,17 +2,26 @@ package sfkao.ptapi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sfkao.ptapi.dto.EquipoDTO;
+import sfkao.ptapi.dto.PTPokemon;
 import sfkao.ptapi.models.Equipo;
 import sfkao.ptapi.models.Pokemon;
 import sfkao.ptapi.repository.EquipoRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EquipoServiceImpl implements EquipoService{
 
     @Autowired
     private EquipoRepository equipoRepository;
+
+    @Autowired
+    private PokemonService pokemonService;
+
+    @Autowired
+    private SkillService skillService;
 
     @Override
     public Optional<Equipo> findById(UUID uuid) {
@@ -26,15 +35,28 @@ public class EquipoServiceImpl implements EquipoService{
     }
 
     @Override
-    public Equipo saveEquipo(List<Pokemon> pokemons) {
+    public EquipoDTO saveEquipo(List<Pokemon> pokemons) {
         return saveEquipo(new HashSet<>(pokemons));
     }
 
     @Override
-    public Equipo saveEquipo(Set<Pokemon> pokemons) {
+    public EquipoDTO saveEquipo(Set<Pokemon> pokemons) {
         Equipo equipo = new Equipo();
         equipo.setPokemons(pokemons);
-        return equipoRepository.save(equipo);
+        Equipo save = equipoRepository.save(equipo);
+        return new EquipoDTO(save.getId(), equipo.getPokemons().stream().map(p -> skillService.transformarAPT(p)).toList());
+    }
+
+    @Override
+    public EquipoDTO saveEquipoPT(List<PTPokemon> pokemons) {
+        Equipo equipo = new Equipo();
+        equipo.setPokemons(
+            pokemons.stream().map(ptPokemon ->
+                pokemonService.findByIdPokemon(ptPokemon.id())
+            ).collect(Collectors.toSet()));
+        Equipo save = equipoRepository.save(equipo);
+
+        return new EquipoDTO(save.getId(), equipo.getPokemons().stream().map(p -> skillService.transformarAPT(p)).toList());
     }
 
     @Override

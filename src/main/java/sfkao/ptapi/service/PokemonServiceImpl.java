@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sfkao.ptapi.dto.PTPokemon;
 import sfkao.ptapi.models.Pokemon;
-import sfkao.ptapi.pojo.pokeapi.getpokemon.PokeApiPokemon;
 import sfkao.ptapi.repository.PokemonRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PokemonServiceImpl implements  PokemonService{
@@ -27,16 +27,18 @@ public class PokemonServiceImpl implements  PokemonService{
     }
 
     @Override
-    public List<PTPokemon> findAllById(int[] ids) {
-
-        ArrayList<Pokemon> pokemons = new ArrayList<>();
-        for (int id : ids) {
-            Optional<Pokemon> byId = pokemonRepository.findById(id);
-            byId.ifPresent(pokemons::add);
-        }
-
-
-        return null;//pokemons;
+    public List<PTPokemon> findAllById(List<Integer> ids) {
+        ArrayList<PTPokemon> pokemons = new ArrayList<>();
+        ids.forEach(id -> {
+            Optional<PTPokemon> byId = Optional.ofNullable(findByIdOrName(String.valueOf(id)));
+            if(byId.isPresent()){
+                PTPokemon p = byId.get();
+                Set<Pokemon> formas = p.formas();
+                formas.forEach(p2 -> p2.setFormas(null));
+                pokemons.add(p);
+            }
+        });
+        return pokemons;
     }
 
     @Override
@@ -60,5 +62,16 @@ public class PokemonServiceImpl implements  PokemonService{
         }else
             pokemon = pOptional.get();
         return skillService.transformarAPT(pokemon);
+    }
+
+    @Override
+    public Pokemon findByIdPokemon(int id) {
+        Pokemon pokemon;
+        Optional<Pokemon> pOptional = pokemonRepository.findById(id);
+        if(pOptional.isEmpty()) {
+            pokemon = pokeApiService.obtenerDePokeApi(String.valueOf(id));
+        }else
+            pokemon = pOptional.get();
+        return pokemon;
     }
 }

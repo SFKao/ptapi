@@ -1,6 +1,8 @@
 package sfkao.ptapi.service;
 
 import org.springframework.stereotype.Service;
+import sfkao.ptapi.dto.EquipoDTO;
+import sfkao.ptapi.dto.PTPokemon;
 import sfkao.ptapi.models.Equipo;
 import sfkao.ptapi.models.Pokemon;
 
@@ -13,8 +15,9 @@ import java.util.UUID;
 public interface EquipoService {
 
     Optional<Equipo> findById(UUID uuid);
-    Equipo saveEquipo(List<Pokemon> pokemons);
-    Equipo saveEquipo(Set<Pokemon> pokemons);
+    EquipoDTO saveEquipo(List<Pokemon> pokemons);
+    EquipoDTO saveEquipo(Set<Pokemon> pokemons);
+    EquipoDTO saveEquipoPT(List<PTPokemon> pokemons);
 
     Equipo updateEquipo(Equipo equipo);
 
