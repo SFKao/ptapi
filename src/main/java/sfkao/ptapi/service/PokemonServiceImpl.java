@@ -26,8 +26,6 @@ public class PokemonServiceImpl implements  PokemonService{
         this.pokeApiService = pokeApiService;
     }
 
-
-
     @Override
     public List<PTPokemon> findAllById(int[] ids) {
 
